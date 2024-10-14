@@ -43,7 +43,7 @@ public class DataBase {
         try {
             connection = db.openConnection();
 
-            // Получаем client_id
+            // Получаем client_id правда мне кажется это делается по другому
             int clientId = getClientIdBySurname(connection, clientSurname);
             if (clientId == -1) {
                 System.out.println("Клиент не найден");
@@ -129,7 +129,7 @@ public class DataBase {
             }
             int productId = productResult.getInt("product_id");
 
-            // Now, insert the order
+
             String orderQuery = "INSERT INTO Orders (client_id, product_id, price) VALUES (?, ?, ?)";
             PreparedStatement orderStatement = connection.prepareStatement(orderQuery);
             orderStatement.setInt(1, clientId);
@@ -156,11 +156,10 @@ public class DataBase {
             statement.setString(1, surname);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                int  id = resultSet.getInt("client_id");
                 String name = resultSet.getString("client_name");
                 surname = resultSet.getString("client_surname");
                 String middlename = resultSet.getString("client_middlename");
-                System.out.println("Id клиента" + id + "Фамилия: " + surname + "Имя: " + name + "Отчество: " + middlename );
+                System.out.println("Фамилия: " + " " + surname + " " + "Имя: "+ " " + name + " " + "Отчество: " + " " + middlename );
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -184,15 +183,15 @@ public class DataBase {
         Connection connection = null;
         try {
             connection = db.openConnection();
-            String query = "SELECT * FROM Contracts";
+            String query = "SELECT Clients.client_surname, Contracts.contract_id,Contracts.start_date,Contracts.end_date FROM `Contracts`, `Clients`;";
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 int idcontr = resultSet.getInt("contract_id");
-                int idclient = resultSet.getInt("client_id");
+                String idclient = resultSet.getString("client_surname");
                 String start_date = resultSet.getString("start_date");
                 String end_date = resultSet.getString("end_date");
-                System.out.println("ID контракта: " + idcontr + ", ID клиента: " + idclient + ", Дата начала: " + start_date + ", Дата окончания: " + end_date);
+                System.out.println("ID контракта: " + " " + idcontr + " " + ", Фамилия клиента: " + " " + idclient + " " + ", Дата начала: " + " " + start_date + " " + ", Дата окончания: " + end_date);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -214,7 +213,7 @@ public class DataBase {
                 int id =  resultSet.getInt("product_id");
                 productName = resultSet.getString("product_name");
 
-                System.out.println("id продукта " + id + "Название продукта: " + productName );
+                System.out.println("id продукта " + " " + id + "" + "Название продукта: " + " " + productName );
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -242,7 +241,7 @@ public class DataBase {
                 String surname = resultSet.getString("client_surname");
                 String name = resultSet.getString("product_name");
                 int price = resultSet.getInt("price");
-                System.out.println("ID Заказа: " + orderId + ", Фамилия клиента: " + surname + ", Название продукта: " + name + ", Цена: " + price);
+                System.out.println("ID Заказа: " + " " + orderId + " " + ", Фамилия клиента: " + " " + surname + " " + ", Название продукта: " + name + ", Цена: " + price);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -264,11 +263,11 @@ public class DataBase {
                 int idsup = resultSet.getInt("issue_id");
                 String description = resultSet.getString("issue_description");
                 String status = resultSet.getString("status");
-                System.out.println("Id ошибки: " + idsup + "Описание ошибки: " + description + "Статус ошибки:" + status );
+                System.out.println("№ ошибки: " + " " + idsup + " " + "Описание ошибки: " + " " + description + " " + "Статус ошибки:" + " " + status );
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Failed to display support information");
+            System.out.println("Не вышло вывести информацию об ошибках");
         } finally {
             db.closeConnection(connection);
         }
